@@ -147,4 +147,76 @@ It doesn't seem to be linked, as the class **Person** has less error thank the c
 ![exo4](img/capture13.png)
 
 ## Exercise 5 (Repo 1): “Java Report for BankApplication” (GitHub Actions - Simple Workflow)
+I created this script :
+```yaml
+name: Java File Scan
 
+on:
+  push:
+  pull_request:
+
+jobs:
+  scan-java:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Scan Java files and generate report
+        run: |
+          set -e
+
+          REPORT="java-file-report.txt"
+
+          echo "Java File Report" > "$REPORT"
+          echo "================" >> "$REPORT"
+          echo "" >> "$REPORT"
+
+          # Find Java files
+          JAVA_FILES=$(find . -type f -name "*.java")
+
+          if [ -z "$JAVA_FILES" ]; then
+            echo "No .java files found."
+            exit 1
+          fi
+
+          # Fail if .class files are committed
+          CLASS_FILES=$(find . -type f -name "*.class")
+          if [ -n "$CLASS_FILES" ]; then
+            echo "Compiled .class files found (bad practice):"
+            echo "$CLASS_FILES"
+            exit 1
+          fi
+
+          TOTAL_FILES=0
+          TOTAL_LINES=0
+
+          echo "Per-file breakdown:" >> "$REPORT"
+
+          for file in $JAVA_FILES; do
+            LINE_COUNT=$(wc -l < "$file")
+            echo "$file – $LINE_COUNT" >> "$REPORT"
+            TOTAL_FILES=$((TOTAL_FILES + 1))
+            TOTAL_LINES=$((TOTAL_LINES + LINE_COUNT))
+          done
+
+          echo "" >> "$REPORT"
+          echo "Summary:" >> "$REPORT"
+          echo "Number of .java files: $TOTAL_FILES" >> "$REPORT"
+          echo "Total lines of code: $TOTAL_LINES" >> "$REPORT"
+
+          echo "Report generated:"
+          cat "$REPORT"
+
+      - name: Upload Java file report
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-file-report
+          path: java-file-report.txt
+```
+Then checked it :
+![exo4](img/capture14.png)
+
+*java-file-report.txt*
+![exo4](img/capture15.png)
