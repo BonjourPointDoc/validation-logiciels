@@ -7,13 +7,16 @@ package bankAccountApp;
 
 import java.util.Scanner;
 
+
 /**
  *
  * @author jay
  */
 public class BankAccountApp {
-
-
+	public static string OP_DEPOSIT="DEPOSIT";
+	public static string OP_WITHDRAW="WITHDRAW";
+	public static string OP_BALANCE="BALANCE";
+	public static string ERR_ACC_NOT_EXISTS="Account doesn't exist";
 	/**
 	 * @param args the command line arguments
 	 */
@@ -89,16 +92,16 @@ public class BankAccountApp {
 									+ " DEPOSIT, WITHDRAW, BALANCE, or MAINMENU ");
 							operation = scan.next();
 
-							if (operation.equalsIgnoreCase("BALANCE")) {
+							if (operation.equalsIgnoreCase(this.OP_BALANCE)) {
 								System.out.println("Balance is: " + acc1.getBalance());
 							}
 
-							if (operation.equalsIgnoreCase("DEPOSIT")) {
+							if (operation.equalsIgnoreCase(this.OP_DEPOSIT)) {
 								System.out.println("Enter an amount to deposit");
 								double depositAmount = scan.nextDouble();
 								acc1.depositMoney(depositAmount);
 							}
-							if (operation.equalsIgnoreCase("WITHDRAW")) {
+							if (operation.equalsIgnoreCase(this.OP_WITHDRAW)) {
 								System.out.println("Enter an amount to withdraw");
 								double withdrawAmount = scan.nextDouble();
 								boolean success = acc1.withdrawMoney(withdrawAmount);
@@ -136,7 +139,7 @@ public class BankAccountApp {
 					number = scan.nextInt();
 					BankAccount tmpacc = accManager.findAccount(number);
 					if (tmpacc == null) {
-						System.out.println("Account dosen't exist");
+						System.out.println(this.ERR_ACC_NOT_EXISTS);
 						break;
 					}
 					accManager.deleteAccount(number);
@@ -146,23 +149,23 @@ public class BankAccountApp {
 					System.out.println(
 							"Enter one of these operations:" + "/n" + " DEPOSIT, WITHDRAW, BALANCE, MENU or QUIT. ");
 					operation = scan.next();
-					if (operation.equalsIgnoreCase("BALANCE")) {
+					if (operation.equalsIgnoreCase(this.OP_BALANCE)) {
 						System.out.println("Enter Account Number");
 						number = scan.nextInt();
 						BankAccount tmpacc = accManager.findAccount(number);
 						if (tmpacc == null) {
-							System.out.println("Account dosen't exist");
+							System.out.println(this.ERR_ACC_NOT_EXISTS);
 							break;
 						}
 						System.out.println("Balance is: " + tmpacc.getBalance());
 					}
 
-					if (operation.equalsIgnoreCase("DEPOSIT")) {
+					if (operation.equalsIgnoreCase(this.OP_DEPOSIT)) {
 						System.out.println("Enter Account number");
 						number = scan.nextInt();
 						BankAccount tmpacc = accManager.findAccount(number);
 						if (tmpacc == null) {
-							System.out.println("Account dosen't exist");
+							System.out.println(this.ERR_ACC_NOT_EXISTS);
 							break;
 						} else {
 							System.out.println("Enter an amount to deposit");
@@ -170,12 +173,12 @@ public class BankAccountApp {
 						double depositAmount = scan.nextDouble();
 						tmpacc.depositMoney(depositAmount);
 					}
-					if (operation.equalsIgnoreCase("WITHDRAW")) {
+					if (operation.equalsIgnoreCase(this.OP_WITHDRAW)) {
 						System.out.println("Enter Account number");
 						number = scan.nextInt();
 						BankAccount tmpacc = accManager.findAccount(number);
 						if (tmpacc == null) {
-							System.out.println("Account dosen't exist");
+							System.out.println(this.ERR_ACC_NOT_EXISTS);
 							break;
 						} else {
 							System.out.println("Enter an amount to withdraw");
@@ -194,8 +197,8 @@ public class BankAccountApp {
 						endProgram = true;
 						mainmenu = false;
 					}
-					if (!operation.equalsIgnoreCase("BALANCE") && !operation.equalsIgnoreCase("DEPOSIT")
-							&& !operation.equalsIgnoreCase("WITHDRAW") && !operation.equalsIgnoreCase("QUIT")
+					if (!operation.equalsIgnoreCase(this.OP_BALANCE) && !operation.equalsIgnoreCase(this.OP_DEPOSIT)
+							&& !operation.equalsIgnoreCase(this.OP_WITHDRAW) && !operation.equalsIgnoreCase("QUIT")
 							&& !operation.equalsIgnoreCase("MAXIMUM") && !operation.equalsIgnoreCase("MINIMUM")
 							&& !operation.equalsIgnoreCase("AVERAGE") && !operation.equalsIgnoreCase("DELETE")) {
 						System.out.println("Invalid Command, please try again");

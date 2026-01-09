@@ -128,25 +128,22 @@ public class BankAccount {
 		}
 	}
 
-	// public boolean withdrawMoney(double withdrawAmount) {
-	// 	if (withdrawAmount >= 0 && balance >= withdrawAmount && withdrawAmount < withdrawLimit
-	// 			&& withdrawAmount + amountWithdrawn <= withdrawLimit) {
-	// 		balance = balance - withdrawAmount;
-	// 		success = true;
-	// 		amountWithdrawn += withdrawAmount;
-	// 	} else {
-	// 		success = false;
-	// 	}
-	// 	return success;
-	// }
 	public boolean withdrawMoney(double withdrawAmount) { 
-		if (withdrawAmount >= 0 && balance >= withdrawAmount && withdrawAmount + amountWithdrawn <= withdrawLimit) {   // decision point 1 (if)
+		if (checkAccountBalance(withdrawAmount)) {   // decision point 1 (if)
 			balance = balance - withdrawAmount;
 			amountWithdrawn += withdrawAmount;
 			return true;
 		}
 		return false;
 	}
+
+    public boolean checkAccountBalance(double withdrawAmount){
+		/* 	Simplifying the if value as one of the clauses was redundant 
+			(if withdrawAmount + amountWithdrawn <= withdrawLimit, 
+			then withdrawAmount is < to withdrawLimit so there is no need to check).
+		*/
+        return (withdrawAmount >= 0 && balance >= withdrawAmount && withdrawAmount + amountWithdrawn <= withdrawLimit);
+    }
 	
 	public void setAccountNumber(int accNumber) {
 		accountNumber = accNumber;
